@@ -1,4 +1,4 @@
-# CP341-Research-Project - Fake Biography Generator
+# CP341 Research Project - Fake Biography Generator
 
 Question: Can we create fake biographies from images of people?
 
