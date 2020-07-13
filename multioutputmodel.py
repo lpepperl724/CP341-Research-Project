@@ -2,11 +2,14 @@ from keras.models import Model, load_model
 from keras.layers import *
 from sklearn.model_selection import KFold
 from os.path import isfile
+import random
+from Dataset_Creator import Dataset_Creator
+import numpy as np
 
 class MultiOutputModel:
-    def __init__(self, mpath='model.model', load=False, rows, cols, channels=1):
+    def __init__(self, rows, cols, channels=3, mpath='model.model', load=False):
         self.img_shape = (rows, cols, channels)       
-        if isfile(mpath) and load:
+        if load and isfile(mpath):
             print("Loading existing model")
             self.m = load_model(mpath)
         else:
@@ -15,7 +18,7 @@ class MultiOutputModel:
 
     def build(self):
         i = Input(shape=self.img_shape)
-        x = Conv2D(32, kernal_size=3, strides=2, padding='same', input_shape=self.img_shape)(i)
+        x = Conv2D(32, kernel_size=3, strides=2, padding='same', input_shape=self.img_shape)(i)
         x = LeakyReLU()(x)
         x = Dropout(.25)(x)
         x = Conv2D(64, 3, 2, 'same')(x)
@@ -32,31 +35,45 @@ class MultiOutputModel:
         o2 = Dense(1, activation='relu')(x) # age
         
         self.m = Model(i, [o1, o2])
-        self.m.compile(optimizer='adam', loss=['binary_crossentropy', 'mean_squred_error'], metrics='accuracy')
+        self.m.compile(optimizer='adam', loss=['binary_crossentropy', 'mean_squared_error'], metrics=['accuracy', 'MeanSquaredError'])
     
-    def train(self, X, y, e, bs):
-        self.m.fit(X, [y[0], y[1]], epochs=e, batch_size=bs)
-        self.m.save()
+        
+    def train(self, X, y0, y1, e, bs):
+        self.m.fit(X, [y0, y1], epochs=e, batch_size=bs)
+        self.m.save('model.model')
     
-    def test(self, X, y, bs):
-        return self.m.evauluate(X, [y[0], y[1]], batch_size=bs, verbose=0)
+    def test(self, X, y0, y1, bs):
+        return self.m.evaluate(X, [y0, y1], batch_size=bs, verbose=0)
     
     def predict(self, x):
         return self.m.predict(x)
 
 def getData():
-    return
+    DC = Dataset_Creator()
+    images, genders, ages = DC.getData('part1/', 100, 100)
+    return images, genders, ages
 
 def main():
-    X, y = getData()
+    print("Getting data..")
+    X, y0, y1 = getData()
+    M = MultiOutputModel(100, 100)
     
-    M = MultiOutputModel()
+    ratio=1
+    if ratio != 1:
+        reduced_index = random.sample(range(len(X)), int(ratio * len(X)))
+        X = X[reduced_index]
+    
     kf = KFold(n_splits=10)
-    i = 0
+    i = 0 
+    print("Training/Testing..")
     for train_index, test_index in kf.split(X):
         i += 1
         X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        M.train(X=X_train, Y=y_train, e=200, bs=32, si=10)
-        loss, accuracy = M.test(X_test, y_test)
+        y0_train, y0_test = y0[train_index], y0[test_index]
+        y1_train, y1_test = y1[train_index], y1[test_index]
+        M.train(X_train, y0_train, y1_train, e=50, bs=32)
+        loss, accuracy = M.test(X_test, y0_test, y1_test, bs=32)
         print("Fold %d results:  loss=%.3f  accuracy=%.3f" % (i, loss, accuracy))
+        M.predict('PREDICTION:', X[0])
+
+main()

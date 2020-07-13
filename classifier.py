@@ -32,6 +32,8 @@ class ImgModel:
         #validity = model(img)
         #return Model(img, validity)
     
+    
+    
     def train(self, X, y, e, bs, si=0):
         self.model.fit(X, y, batch_size=bs, epochs=e, verbose=0)
     
