@@ -21,6 +21,8 @@ def load_text():
                 one_biography = Lines[i]
                 condition = 1
             else:
+                one_biography = one_biography.replace("-lrb-", "")
+                one_biography = one_biography.replace("-rrb-", "")
                 biography_dataset.append(one_biography)
                 one_biography = Lines[i]
         else:
@@ -40,3 +42,4 @@ def text_processing(dataset):
 
 load_text()
 biography_dataset = text_processing(biography_dataset)
+print(biography_dataset[0])
