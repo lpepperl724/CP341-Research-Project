@@ -2,6 +2,7 @@
 from Dataset_Creator import Dataset_Creator
 from multioutputmodel import MultiOutputModel
 from imager_fetcher import ImageFetcher
+from PageGenerator/page_generator import *
 
 #library imports
 from sklearn.model_selection import train_test_split
@@ -60,8 +61,9 @@ def main():
     print("PREDICTION:  gender: %d  age: %d" % (gender, age))
     
     # generate a biography
-    print("Building biography..")
+    print("Building biography and website..")
     #bio(image, gender, age)
+    WikiPage(age,image)
 
 if __name__ == '__main__':
     main()
