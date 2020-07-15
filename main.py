@@ -23,7 +23,7 @@ dc_folder = 'part1/'
 img_width = 150
 img_height = 150
 max_data = 1000
-load_model = False
+load_model = True
 epochs = 20
 trials = 5
 image_saveloc = 'prediction.png'
@@ -65,6 +65,7 @@ def main():
     # generate a biography
     print("Building biography..")
     #bio(image, gender, age)
+    #wiki(bio)
 
 if __name__ == '__main__':
     main()
