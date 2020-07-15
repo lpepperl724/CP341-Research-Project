@@ -15,15 +15,17 @@ img_width - resize width of all images
 img_height - resize height of all images
 max_data - maximum amount of data loaded for training/testing (if not load_model)
 load_model - if True: load previously trained model from 'model' folder, if False: build and trian new model
-epochs - number of training epochs (if not load_model)
+epochs - number of training epochs per trial (if not load_model)
+trials - number of training sessions using unique subsets of the data (if not load_model)
 image_saveloc - location to save prediction image
 '''
 dc_folder = 'part1/'
 img_width = 150
 img_height = 150
 max_data = 1000
-load_model = True
-epochs = 25
+load_model = False
+epochs = 20
+trials = 5
 image_saveloc = 'prediction.png'
 
 
@@ -40,8 +42,9 @@ def main():
         
         # train/test the model
         print("Training model..")
-        X_train, X_test, y0_train, y0_test, y1_train, y1_test = train_test_split(images, genders, ages, test_size=.15)
-        MOM.train(X_train, y0_train, y1_train, epochs)
+        for t in range (trials):
+            X_train, X_test, y0_train, y0_test, y1_train, y1_test = train_test_split(images, genders, ages, test_size=.2)
+            MOM.train(X_train, y0_train, y1_train, epochs)
         #print("Testing model..")
         #print(MOM.test(X_test, y0_test, y1_test))
        
