@@ -2,7 +2,7 @@
 from Dataset_Creator import Dataset_Creator
 from multioutputmodel import MultiOutputModel
 from imager_fetcher import ImageFetcher
-from PageGenerator/page_generator import *
+#from PageGenerator.page_generator import *
 
 #library imports
 from sklearn.model_selection import train_test_split
@@ -24,12 +24,9 @@ img_width = 150
 img_height = 150
 max_data = 1000
 load_model = True
-<<<<<<< HEAD
 epochs = 20
 trials = 5
-=======
 epochs = 25
->>>>>>> 6c2588f14351a013023e61f61bfe4d59f81e2c59
 image_saveloc = 'prediction.png'
 
 
@@ -68,11 +65,7 @@ def main():
     # generate a biography
     print("Building biography and website..")
     #bio(image, gender, age)
-<<<<<<< HEAD
-    #wiki(bio)
-=======
-    WikiPage(age,image)
->>>>>>> 6c2588f14351a013023e61f61bfe4d59f81e2c59
+    #WikiPage(age, image)
 
 if __name__ == '__main__':
     main()
