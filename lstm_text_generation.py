@@ -84,7 +84,7 @@ for i, sentence in enumerate(sentences):
         X[i, t, word_indices[word]] = 1
     y[i, word_indices[next_words[i]]] = 1
 
-
+'''
 #build the model: 2 stacked LSTM
 print('Build model...')
 model = Sequential()
@@ -97,7 +97,7 @@ model.add(Dense(len(new_words)))
 model.add(Activation('softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-
+'''
 def sample(a, temperature=1.0):
     # helper function to sample an index from a probability array
     a = a / np.sum(a)
