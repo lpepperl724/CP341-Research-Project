@@ -48,4 +48,4 @@ class MultiOutputModel:
         self.m.evaluate(X, [y0, y1], batch_size=10)
     
     def predict(self, x):
-        return self.m.predict(np.array([x,]))
+        return self.m.predict(np.array([x]))
