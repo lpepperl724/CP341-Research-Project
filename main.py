@@ -4,39 +4,67 @@ from multioutputmodel import MultiOutputModel
 from imager_fetcher import ImageFetcher
 
 #library imports
-from sklearn.model_selection import KFold
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import numpy as np
+
 '''
+Parameters:
+dc_folder - location of the training dataset (if not load_model)
+img_width - resize width of all images
+img_height - resize height of all images
+max_data - maximum amount of data loaded for training/testing (if not load_model)
+load_model - if True: load previously trained model from 'model' folder, if False: build and trian new model
+epochs - number of training epochs (if not load_model)
+image_saveloc - location to save prediction image
 '''
 dc_folder = 'part1/'
-img_width = 150
-img_height = 150
-max_data = 500
-load_model=True
-epochs = 50
-folds = 10
-image_saveloc = ''
+img_width = 200
+img_height = 200
+max_data = 750
+load_model = True
+epochs = 25
+image_saveloc = 'prediction.png'
 
 
 def main():
     # initialize our model
-    MOM = MultiOutputModel(img_width, img_height, load_model)
+    print("Initializing model..")
+    MOM = MultiOutputModel(img_width, img_height, load=load_model)
     
-    # get the dataset for training our model
     if load_model == False:
+        # get the dataset for training our model
+        print("Loading dataset..")
         DC = Dataset_Creator()
         images, genders, ages = DC.getData(dc_folder, img_width, img_height, max_data)
-    
+        
         # train/test the model
-        MOM.train(images, genders, ages, epochs)
-        #MOM.test()
+        print("Training model..")
+        X_train, X_test, y0_train, y0_test, y1_train, y1_test = train_test_split(images, genders, ages, test_size=.15)
+        MOM.train(X_train, y0_train, y1_train, epochs)
+        #print("Testing model..")
+        #print(MOM.test(X_test, y0_test, y1_test))
        
-    # create some fake data    
+    # create some fake data
+    print("Generating fake data..")
     IF = ImageFetcher()
     image = IF.getImage('http://thispersondoesnotexist.com/image', image_saveloc, img_width, img_height)
-    gender, age = MOM.predict(image)
+    p = MOM.predict(image)
+    gender = round(p[0][0][0])
+    age = round(p[1][0][0])
+    
+    #display results
+    plt.imshow(image, interpolation='nearest')
+    plt.axis('off')
+    plt.show()
+    print("PREDICTION:  gender: %d  age: %d" % (gender, age))
     
     # generate a biography
+    print("Building biography..")
     #bio(image, gender, age)
+
+if __name__ == '__main__':
+    main()
     
     
     

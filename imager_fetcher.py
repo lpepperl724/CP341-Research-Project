@@ -2,6 +2,7 @@
 #'thispersondoesnotexist.com'
 import requests
 from PIL import Image
+import numpy as np
 
 
 class ImageFetcher:
@@ -16,4 +17,4 @@ class ImageFetcher:
         img = Image.open(img_saveloc)
         img = img.resize((width, height))
         
-        return img
+        return np.array(img)
