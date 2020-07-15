@@ -24,7 +24,12 @@ img_width = 150
 img_height = 150
 max_data = 1000
 load_model = True
+<<<<<<< HEAD
+epochs = 20
+trials = 5
+=======
 epochs = 25
+>>>>>>> 6c2588f14351a013023e61f61bfe4d59f81e2c59
 image_saveloc = 'prediction.png'
 
 
@@ -63,7 +68,11 @@ def main():
     # generate a biography
     print("Building biography and website..")
     #bio(image, gender, age)
+<<<<<<< HEAD
+    #wiki(bio)
+=======
     WikiPage(age,image)
+>>>>>>> 6c2588f14351a013023e61f61bfe4d59f81e2c59
 
 if __name__ == '__main__':
     main()
