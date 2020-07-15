@@ -5,6 +5,7 @@ from os.path import isfile
 import random
 from Dataset_Creator import Dataset_Creator
 import numpy as np
+import matplotlib.pyplot as plt
 
 class MultiOutputModel:
     def __init__(self, rows, cols, channels=3, mpath='model.model', load=False):
@@ -46,7 +47,7 @@ class MultiOutputModel:
         return self.m.evaluate(X, [y0, y1], batch_size=bs, verbose=0)
     
     def predict(self, x):
-        return self.m.predict(x)
+        return self.m.predict(np.array([x,]))
 
 def getData():
     DC = Dataset_Creator()
@@ -72,8 +73,12 @@ def main():
         y0_train, y0_test = y0[train_index], y0[test_index]
         y1_train, y1_test = y1[train_index], y1[test_index]
         M.train(X_train, y0_train, y1_train, e=50, bs=32)
-        loss, accuracy = M.test(X_test, y0_test, y1_test, bs=32)
-        print("Fold %d results:  loss=%.3f  accuracy=%.3f" % (i, loss, accuracy))
-        M.predict('PREDICTION:', X[0])
+        M.test(X_test, y0_test, y1_test, bs=32)
+        #loss, accuracy = M.test(X_test, y0_test, y1_test, bs=32)
+        #print("Fold %d results:  loss=%.3f  accuracy=%.3f" % (i, loss, accuracy))
+        print('PREDICTION:', M.predict(X_test[0]))
+        print('ACTUAL:', y0_test[0], y1_test[0])
+        plt.imshow(X_test[0], interpolation='nearest')
+        plt.show()
 
 main()

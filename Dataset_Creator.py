@@ -21,7 +21,7 @@ class Dataset_Creator:
                 self.extract_age_and_gender(filename)
             img.close()
             #temp fix for getting a smaller sample of the data
-            if i > 200:
+            if i > 500:
                 break
             i+=1
 
