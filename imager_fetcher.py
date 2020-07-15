@@ -1,19 +1,19 @@
 #fetches images from the website 
 #'thispersondoesnotexist.com'
+import requests
+from PIL import Image
 
-def getImage():    
-    
-    image_url = 'http://thispersondoesnotexist.com/image'
-    
-    img_data = requests.get(image_url).content
-    
-    # save the image
-    with open('static/img/profile_image.jpg', 'wb') as handler:
-        handler.write(img_data)
+
+class ImageFetcher:
+    def __init__(self):
+        return
+
+    def getImage(self, url, img_saveloc, width, height):     
+        img_data = requests.get(url).content
+        # save the image
+        with open(img_saveloc, 'wb') as handler:
+            handler.write(img_data)       
+        img = Image.open(img_saveloc)
+        img = img.resize((width, height))
         
-    # get and resize the image
-    my_image = io.imread('static/img/profile_image.jpg')
-    my_image = resize(my_image, (220, 220))
-    
-    # resave the image
-    io.imsave('static/img/image_resized.jpg', my_image)
+        return img
