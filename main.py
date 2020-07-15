@@ -19,9 +19,9 @@ epochs - number of training epochs (if not load_model)
 image_saveloc - location to save prediction image
 '''
 dc_folder = 'part1/'
-img_width = 200
-img_height = 200
-max_data = 750
+img_width = 150
+img_height = 150
+max_data = 1000
 load_model = True
 epochs = 25
 image_saveloc = 'prediction.png'
