@@ -44,7 +44,4 @@ class Dataset_Creator:
         self.ages = np.array(self.ages)
         self.genders = np.array(self.genders)
         return self.images, self.genders, self.ages
-
-DC = Dataset_Creator()
-DC.getData('part1/', 150, 150, 500)
         
