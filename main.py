@@ -1,7 +1,7 @@
 # module imports
 from Dataset_Creator import Dataset_Creator
 from multioutputmodel import MultiOutputModel
-from image_fetcher import ImageFetcher
+from imager_fetcher import ImageFetcher
 
 #library imports
 from sklearn.model_selection import KFold
